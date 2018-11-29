@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"/>
+<head th:replace="layout/layout::head"> </head> <!-- Forma de insertar parte de la plantilla LAYOUT en la pagina INDEX.HTML -->
+<body>
+
+<header th:replace="layout/layout::header"></header>
+
+	<div class="container py-4"> <!-- la nomenclatura py-4 se emplea para separar cuatro columnas en el eje Y -->
+		<div>
+			<div class="card bg-light">
+				<div class="card-header" th:text="${titulo}">
+				</div>
+				
+				<div class="card-body">
+					<h4 class="card-tittle"><a th:href="@{/form}">Introduzca Cliente</a> </h4>	
+					<table class="table">
+					  <thead class="thead-dark">
+					    <tr>
+					      <th scope="col">Id</th>
+					      <th scope="col">Nombre</th>
+					      <th scope="col">Apellido</th>
+					      <th scope="col">Editar</th>
+					      <th scope="col">Eliminar</th>
+					    </tr>
+					  </thead>
+					  <tbody>
+					    <tr th:each=tabla:${tabla}>
+					      <td><a class="btn btn-primary btn-xs" th:href="@{/ver/}+${tabla.id}" th:text="${tabla.id}" ></a></th>
+					      <td th:text="${tabla.nombre}"></td>
+					      <td th:text="${tabla.apellido}"></td>
+					      <!-- Forma de insertar texto en el LINK ------ th:text="'Editar'"
+					      		Forma de establecer la direccion de la ruta en el URL ----- th:href="@{/form/}+${tabla.id}" 
+					       --> 
+					      <td><a class="btn btn-primary btn-xs"  th:href="@{/form/}+${tabla.id}" th:text="'Editar'"></a></td>
+					      <td><a class="btn btn-danger btn-xs" th:href="@{/eliminar/}+${tabla.id}" th:text="'Eliminar'"></a></td>
+					    </tr>
+					  </tbody>
+					</table> 
+					 
+					<nav th:replace="paginacion::paginador"></nav>
+						 
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div>
+		<br>
+		<footer th:replace="layout/layout::footer"></footer>
+	</div>
+	
+</body>
+</html>

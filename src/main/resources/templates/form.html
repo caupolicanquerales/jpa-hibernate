@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"/>
+<head th:replace="layout/layout::head"></head>
+<body>
+	<header th:replace="layout/layout::header"></header>
+	
+	<div class="container py-4">
+	
+		<div class="card bg-dark text-white">
+			<div class="card-header" th:text="${titulo}"></div>
+			<div class="card-body">
+				<!-- Hay que establecer los parametros del formulario "DIRECCION URL y OBJETO ENTITY" 
+					NOTA: las direcciones son anteponiendo "@" y los parametros anteponiendo "$"
+					NOTA: para especificar las variables a usar en el "ENTITY" anteponemos "*", especificar--- th:field="*{ }"
+					NOTA: SPRING en este formulario, para el objeto TABLA para el metodo en el BACK-END
+					
+					NOTA:
+						<small th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></small>
+						las estructuras "${#fields.hasErrors('nombre')}" se usa para preguntar si el campo field del formulario esta vacio(@NotEmpty) en la ENTITY
+						th:errors="*{nombre}" ---- esta estructura muestra en la etiqueta el ERROR obtenido por la validacion del (@NotEmpty)
+				-->
+						<!-- Estructura para mostrar una lista de errores, los errores que se detectan en la FORMA 
+						
+						NOTA: th:if="${#fields.hasErrors('*')}" --- esta instruccion es para preguntar si existen errores y seguir iterando hasta que no haya
+						NOTA: th:each="err : ${#fields.errors('*')}" ---- esta instruccion toma cada error del campo.
+						NOTA: th:text="${err}" ---- esto escribe en la etiqueta el valor del error.
+						
+						NOTA: para agregar subir archivos al servidor  se debe agregar le siguiente instruccion  ' enctype="multipart/form-data" '   
+					-->	
+					<div th:object="${tabla}" th:remove="tag"> <!-- Estructura para mostrar errores -->
+						<ul class="list-group" th:if="${#fields.hasErrors('*')}">
+						  <li class="list-group-item list-group-item-danger" th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
+						</ul>		
+					</div>
+						<form th:action="@{/form}" th:object="${tabla}" method="post" enctype="multipart/form-data">
+						  <div class="form-group">
+						    <label for="nombre">Nombre</label>
+						    <input type="text" class="form-control" id="nombre" aria-describedby="emailHelp" placeholder="Introduzca Nombre" th:field="*{nombre}" th:errorclass="'form-control alert-danger'"/>
+						    <small class="form-text text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></small>
+						  </div>
+						  <div class="form-group">
+						    <label for="apellido">Apellido</label>
+						    <input type="text" class="form-control" id="apellido" placeholder="Introduzca Apellido" th:field="*{apellido}" th:errorclass="'form-control alert-danger'"/>
+						    <small class="form-text text-danger" th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}"></small>
+						  </div>
+						  
+						  <!-- Forma de agregar el campo para subir archivos al servidor -->
+						  <div class="form-group">
+						  	<label for="file" class="col-sm-2 col-form-label">Foto</label>
+						  	<div class="col-sm-6">
+						  		<input type="file" name="file" class="form-control" /> <!-- Estructura para ordenar la accion de busqueda del archivo -->
+						  	</div>
+						  </div>
+						  
+						  <button type="submit" class="btn btn-primary">Submit</button>
+					</form>						
+			</div>
+		</div>
+
+	</div>
+	
+	<footer th:replace="layout/layout::footer"></footer>
+</body>
+</html>
